@@ -2,7 +2,7 @@
   "name": "minimal-js-graph",
   "version": "1.0.0",
   "description": "Minimal JavaScript server-client engine featuring websockets and D3",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
