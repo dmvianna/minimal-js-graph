@@ -1,0 +1,24 @@
+{
+  "name": "minimal-js-graph",
+  "homepage": "https://github.com/dmvianna/minimal-js-graph",
+  "authors": [
+    "Daniel Vianna <dmlvianna@gmail.com>"
+  ],
+  "description": "minimal example server-client dashboard",
+  "main": "app.js",
+  "keywords": [
+    "dashboard"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "babel": "^5.8.38",
+    "react": "^15.4.2"
+  }
+}
