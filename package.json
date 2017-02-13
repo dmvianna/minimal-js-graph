@@ -1,0 +1,29 @@
+{
+  "name": "minimal-js-graph",
+  "version": "1.0.0",
+  "description": "Minimal JavaScript server-client engine featuring websockets and D3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmvianna/minimal-js-graph.git"
+  },
+  "keywords": [
+    "example",
+    "javascript",
+    "D3",
+    "websockets",
+    "node"
+  ],
+  "author": "Daniel Vianna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmvianna/minimal-js-graph/issues"
+  },
+  "homepage": "https://github.com/dmvianna/minimal-js-graph#readme",
+  "dependencies": {
+    "ws": "^2.0.3"
+  }
+}
