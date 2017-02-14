@@ -6,12 +6,17 @@ const GraphDashboard = React.createClass({
   },
   componentDidMount: function () {
     this.ws.onmessage = (event, flags) => {
-      this.setState({ data: event.data })
+      const stateData = this.state.data
+      if (stateData.length > 10) {
+        stateData.shift()
+      }
+      stateData.push(event.data) 
+      this.setState({ data: stateData })
     }
   },
   getInitialState: function () {
     return {
-      data: 0
+      data: [0]
     }
   },
   render: function () {
