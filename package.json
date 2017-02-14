@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/dmvianna/minimal-js-graph#readme",
   "dependencies": {
+    "uuid": "^3.0.1",
     "ws": "^2.0.3"
   }
 }

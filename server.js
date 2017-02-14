@@ -3,6 +3,7 @@ const fs = require("fs")
 const http = require("http")
 const path = require("path")
 const url = require("url")
+const uuid = require("uuid/v4")
 const WebSocket = require("ws")
 
 const port = 3000
@@ -63,25 +64,26 @@ wsServer = new WebSocket.Server({ server, verifyClient })
 
 // client handling
 wsServer.on('connection', client => {
-  console.log(dateStr(), client.url, 'connected.')
+  client.id = uuid()
+  console.log(dateStr(), client.id, 'connected.')
   client.on('message', message => {
-    console.log(dateStr(), client.url, message)
+    console.log(dateStr(), client.id, message)
   })
   client.on('close', (reasonCode, description) => {
-    console.log(dateStr(), client.url, 'disconnected.')
+    console.log(dateStr(), client.id, 'disconnected.')
   })
 })
 
 // send data
 wsServer.broadcast = data => {
   wsServer.clients.forEach( client => {
-    if (client.ReadyState === WebSocket.OPEN) {
+    if (client.readyState === 1) {
       client.send(data)
     }
   })
 }
 
-setTimeout(() => {
-  const int = Math.random() * 10 // meaningful data
+setInterval(() => {
+  const int = Math.floor(Math.random() * 10) // meaningful data
   wsServer.broadcast(int)
 }, timeFreq)
