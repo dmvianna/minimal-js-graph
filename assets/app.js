@@ -35,8 +35,8 @@ d3Chart.update = function (el, state) {
   point.enter().append('circle')
     .attr('class', 'd3-point')
   point
-    .attr('cy', d => d.val)
-    .attr('cx', d => d.id)
+    .attr('cy', d => d.y)
+    .attr('cx', d => d.x)
     .attr('r', d => 5)
   point.exit().remove()
   const scales = this._scales(el, state.domain)
@@ -52,13 +52,13 @@ d3Chart._drawPoints = function (el, scales, data, prevScales) {
     .attr('class', 'd3-point')
     .attr('cx', d => {
       if (prevScales) {
-        return prevScales.x(d.id)
+        return prevScales.x(d.x)
       }
-      return scales.x(d.id)
+      return scales.x(d.x)
     })
   point
-    .attr('cx', d => scales.x(d.id))
-    .attr('cy', d => scales.y(d.val))
+    .attr('cx', d => scales.x(d.x))
+    .attr('cy', d => scales.y(d.y))
   point.exit().remove()
 }
 
@@ -100,9 +100,9 @@ const Chart = React.createClass({
 const GraphDashboard = React.createClass({
   getInitialState: function () {
     return {
-      data: [{ id: 0, val: 0}],
+      data: [{ id: 9, y: 0, x: 10 }],
       domain: {
-        x: [0, 10],
+        x: [10, 0],
         y: [0, 10]
       }
     }
@@ -113,14 +113,22 @@ const GraphDashboard = React.createClass({
   },
   componentDidMount: function () {
     this.ws.onmessage = (event, flags) => {
-      const oldStateData = this.state.data
-      if (oldStateData.length > 10) {
+      let oldStateData = this.state.data
+
+      if (oldStateData.length > 9) {
         oldStateData.shift()
       }
+
+      oldStateData = oldStateData.map(d => {
+        d.x = d.x -1
+        return d
+      })
+        
       const newData = event.data
       oldStateData.push({
         id: oldStateData[oldStateData.length - 1].id + 1,
-        val: newData
+        x: oldStateData[oldStateData.length - 1].x + 1,
+        y: newData
       })
       this.setState({ data: oldStateData })
     }
