@@ -8,7 +8,7 @@ d3Chart.create = function (el, props, state) {
     .attr('width', props.width)
     .attr('height', props.height)
   svg.append('g')
-    .attr('class', 'd3-points')
+    .attr('class', 'd3-line')
   this.update(el, state)
 }
 
@@ -30,16 +30,17 @@ d3Chart._scales = function (el, domain) {
 
 d3Chart.update = function (el, state) {
   const scales = this._scales(el, state.domain)
-  const g = d3.select(el).selectAll('.d3-points')
-  const point = g.selectAll('.d3-point')
-    .data(state.data)
-  point.enter().append('circle')
-    .attr('class', 'd3-point')
-  point
-    .attr('cy', d => scales.y(Math.max( ...state.domain.y) - d.y))
-    .attr('cx', d => scales.x(d.x))
-    .attr('r', d => 2)
-  point.exit().remove()
+  const g = d3.select(el).selectAll('.d3-line')
+  const line = d3.line()
+    .y(d => scales.y(Math.max( ...state.domain.y) - d.y))
+    .x(d => scales.x(d.x))
+  g.append('path')
+    .datum(state.data)
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-width', 2)
+    .attr('d', line)
 }
 
 const Chart = React.createClass({
