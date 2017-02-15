@@ -29,6 +29,7 @@ d3Chart._scales = function (el, domain) {
 }
 
 d3Chart.update = function (el, state) {
+  const scales = this._scales(el, state.domain)
   const g = d3.select(el).selectAll('.d3-points')
   const point = g.selectAll('.d3-point')
     .data(state.data)
@@ -37,28 +38,7 @@ d3Chart.update = function (el, state) {
   point
     .attr('cy', d => d.y)
     .attr('cx', d => d.x)
-    .attr('r', d => 5)
-  point.exit().remove()
-  const scales = this._scales(el, state.domain)
-  const prevScales = this._scales(el, state.prevDomain)
-  this._drawPoints(el, scales, state.data, prevScales)
-}
-
-d3Chart._drawPoints = function (el, scales, data, prevScales) {
-  const g = d3.select(el).selectAll('.d3-points')
-  const point = g.selectAll('.d3-point')
-    .data(data, function(d) { return d.id })
-  point.enter().append('circle')
-    .attr('class', 'd3-point')
-    .attr('cx', d => {
-      if (prevScales) {
-        return prevScales.x(d.x)
-      }
-      return scales.x(d.x)
-    })
-  point
-    .attr('cx', d => scales.x(d.x))
-    .attr('cy', d => scales.y(d.y))
+    .attr('r', d => 2)
   point.exit().remove()
 }
 
@@ -103,7 +83,7 @@ const GraphDashboard = React.createClass({
       data: [{ id: 9, y: 0, x: 10 }],
       domain: {
         x: [10, 0],
-        y: [0, 10]
+        y: [10, 0]
       }
     }
   },
@@ -124,7 +104,7 @@ const GraphDashboard = React.createClass({
         return d
       })
         
-      const newData = event.data
+      const newData = parseInt(event.data)
       oldStateData.push({
         id: oldStateData[oldStateData.length - 1].id + 1,
         x: oldStateData[oldStateData.length - 1].x + 1,
