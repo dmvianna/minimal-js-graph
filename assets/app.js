@@ -19,7 +19,7 @@ d3Chart._scales = function (el, domain) {
   const width = el.offsetWidth
   const height = el.offsetHeight
 
-  const x = d3.scaleOrdinal()
+  const x = d3.scaleLinear()
     .range([0, width])
     .domain(domain.x)
   const y = d3.scaleLinear()
@@ -37,7 +37,7 @@ d3Chart.update = function (el, state) {
     .attr('class', 'd3-point')
   point
     .attr('cy', d => scales.y(d.y))
-    .attr('cx', d => d.x)
+    .attr('cx', d => scales.x(d.x))
     .attr('r', d => 2)
   point.exit().remove()
 }
