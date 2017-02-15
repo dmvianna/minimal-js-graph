@@ -36,7 +36,7 @@ d3Chart.update = function (el, state) {
   point.enter().append('circle')
     .attr('class', 'd3-point')
   point
-    .attr('cy', d => scales.y(d.y))
+    .attr('cy', d => scales.y(Math.max( ...state.domain.y) - d.y))
     .attr('cx', d => scales.x(d.x))
     .attr('r', d => 2)
   point.exit().remove()
@@ -82,8 +82,8 @@ const GraphDashboard = React.createClass({
     return {
       data: [{ id: 9, y: 0, x: 10 }],
       domain: {
-        x: [10, 0],
-        y: [10, 0]
+        x: [0, 10],
+        y: [0, 10]
       }
     }
   },
@@ -100,7 +100,7 @@ const GraphDashboard = React.createClass({
       }
 
       oldStateData = oldStateData.map(d => {
-        d.x = d.x -1
+        d.x = d.x - 1
         return d
       })
         
