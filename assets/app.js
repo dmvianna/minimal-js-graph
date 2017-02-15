@@ -36,7 +36,7 @@ d3Chart.update = function (el, state) {
   point.enter().append('circle')
     .attr('class', 'd3-point')
   point
-    .attr('cy', d => d.y)
+    .attr('cy', d => scales.y(d.y))
     .attr('cx', d => d.x)
     .attr('r', d => 2)
   point.exit().remove()
