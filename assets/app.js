@@ -30,6 +30,7 @@ d3Chart._scales = function (el, domain) {
 
 d3Chart.update = function (el, state) {
   const scales = this._scales(el, state.domain)
+  d3.select('.d3-line').select('path').remove()
   const g = d3.select(el).selectAll('.d3-line')
   const line = d3.line()
     .y(d => scales.y(Math.max( ...state.domain.y) - d.y))
