@@ -3,10 +3,13 @@
 const d3Chart = {}
 
 d3Chart.create = function (el, props, state) {
+  // svg canvas
   const svg = d3.select(el).append('svg')
     .attr('class', 'd3')
     .attr('width', props.width)
     .attr('height', props.height)
+
+  // First point
   svg.append('g')
     .attr('class', 'd3-line')
   this.update(el, state)
@@ -23,14 +26,34 @@ d3Chart._scales = function (el, domain) {
     .range([0, width])
     .domain(domain.x)
   const y = d3.scaleLinear()
-    .range([0, height])
+    .range([height, 0])
     .domain(domain.y)
   return { x, y }
 }
 
 d3Chart.update = function (el, state) {
+
+  // remove old line and axes
+  d3.select(el).select('.d3-line').select('path').remove()
+  d3.select(el).selectAll('.xAxis').remove()
+
+  // get canvas
+  const svg = d3.select(el).select('svg')
+
+  // axis
   const scales = this._scales(el, state.domain)
-  d3.select('.d3-line').select('path').remove()
+  const xAxis = d3.axisBottom().scale(scales.x)
+  const yAxis = d3.axisLeft().scale(scales.y)
+  svg.append('g')
+    .attr('class','xAxis')
+    .attr('transform','translate(0,0)')
+    .call(xAxis)
+  svg.append('g')
+    .attr('class','yAxis')
+    .attr('transform','translate(0,0)')
+    .call(yAxis)
+
+  // lines
   const g = d3.select(el).selectAll('.d3-line')
   const line = d3.line()
     .y(d => scales.y(Math.max( ...state.domain.y) - d.y))
@@ -52,8 +75,8 @@ const Chart = React.createClass({
   componentDidMount: function () {
     const el = ReactDOM.findDOMNode(this)
     d3Chart.create(el, {
-      width: '100%',
-      height: '300px'
+      width: '110%',
+      height: '110%'
     }, this.getChartState())
   },
   componentDidUpdate: function () {
@@ -82,7 +105,11 @@ const Chart = React.createClass({
 const GraphDashboard = React.createClass({
   getInitialState: function () {
     return {
-      data: [{ id: 9, y: 0, x: 10 }],
+      data: [{
+        id: 9,
+        y: 0,
+        x: 10 // start from max x axis (far right of the graph)
+      }],
       domain: {
         x: [0, 10],
         y: [0, 10]
@@ -97,7 +124,7 @@ const GraphDashboard = React.createClass({
     this.ws.onmessage = (event, flags) => {
       let oldStateData = this.state.data
 
-      if (oldStateData.length > 9) {
+      if (oldStateData.length > 10) {
         oldStateData.shift()
       }
 
