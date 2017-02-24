@@ -36,7 +36,8 @@ d3Chart.update = function (el, state) {
   // remove old line and axes
   d3.select(el).select('.d3-line').select('path').remove()
   d3.select(el).selectAll('.xAxis').remove()
-
+  d3.select(el).selectAll('.yAxis').remove()
+  
   // get canvas
   const svg = d3.select(el).select('svg')
 
@@ -44,13 +45,13 @@ d3Chart.update = function (el, state) {
   const scales = this._scales(el, state.domain)
   const xAxis = d3.axisBottom().scale(scales.x)
   const yAxis = d3.axisLeft().scale(scales.y)
+  console.log(svg.attr('height'))
   svg.append('g')
     .attr('class','xAxis')
     .attr('transform','translate(0,0)')
     .call(xAxis)
   svg.append('g')
     .attr('class','yAxis')
-    .attr('transform','translate(0,0)')
     .call(yAxis)
 
   // lines
@@ -75,8 +76,8 @@ const Chart = React.createClass({
   componentDidMount: function () {
     const el = ReactDOM.findDOMNode(this)
     d3Chart.create(el, {
-      width: '110%',
-      height: '110%'
+      width: '100%',
+      height: '100%'
     }, this.getChartState())
   },
   componentDidUpdate: function () {
