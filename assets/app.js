@@ -23,10 +23,10 @@ d3Chart._scales = function (el, domain) {
   const height = el.offsetHeight
 
   const x = d3.scaleLinear()
-    .range([0, width])
+    .range([0, width - 20])
     .domain(domain.x)
   const y = d3.scaleLinear()
-    .range([height, 0])
+    .range([height * 0.89, 10])
     .domain(domain.y)
   return { x, y }
 }
@@ -45,10 +45,9 @@ d3Chart.update = function (el, state) {
   const scales = this._scales(el, state.domain)
   const xAxis = d3.axisBottom().scale(scales.x)
   const yAxis = d3.axisLeft().scale(scales.y)
-  console.log(svg.attr('height'))
   svg.append('g')
     .attr('class','xAxis')
-    .attr('transform','translate(0,0)')
+    .attr('transform','translate(0,' + svg.attr('height') + ')')
     .call(xAxis)
   svg.append('g')
     .attr('class','yAxis')
@@ -77,7 +76,7 @@ const Chart = React.createClass({
     const el = ReactDOM.findDOMNode(this)
     d3Chart.create(el, {
       width: '100%',
-      height: '100%'
+      height: 200 // percentage doesn't work well with height
     }, this.getChartState())
   },
   componentDidUpdate: function () {
