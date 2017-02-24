@@ -108,10 +108,10 @@ const GraphDashboard = React.createClass({
       data: [{
         id: 9,
         y: 0,
-        x: 10 // start from max x axis (far right of the graph)
+        x: 0 // start from max x axis (far right of the graph)
       }],
       domain: {
-        x: [0, 10],
+        x: [-10, 0],
         y: [0, 9]
       }
     }
@@ -122,24 +122,24 @@ const GraphDashboard = React.createClass({
   },
   componentDidMount: function () {
     this.ws.onmessage = (event, flags) => {
-      let oldStateData = this.state.data
+      let stateData = this.state.data
+      let stateDomain = this.state.domain
+      stateDomain.x = stateDomain.x.map(e => e + 1)
 
-      if (oldStateData.length > 10) {
-        oldStateData.shift()
+      if (stateData.length > 10) {
+        stateData.shift()
       }
 
-      oldStateData = oldStateData.map(d => {
-        d.x = d.x - 1
-        return d
-      })
-        
       const newData = parseInt(event.data)
-      oldStateData.push({
-        id: oldStateData[oldStateData.length - 1].id + 1,
-        x: oldStateData[oldStateData.length - 1].x + 1,
+      stateData.push({
+        id: stateData[stateData.length - 1].id + 1,
+        x: stateData[stateData.length - 1].x + 1,
         y: newData
       })
-      this.setState({ data: oldStateData })
+      this.setState({
+        data: stateData,
+        domain: stateDomain
+      })
     }
   },
   render: function () {
