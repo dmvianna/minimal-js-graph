@@ -1,5 +1,6 @@
 // D3
 
+const XDOMAIN = 50 // how many tick do we want the x axis to have
 const d3Chart = {}
 
 d3Chart.create = function (el, props, state) {
@@ -111,7 +112,7 @@ const GraphDashboard = React.createClass({
         x: 0 // start from max x axis (far right of the graph)
       }],
       domain: {
-        x: [-10, 0],
+        x: [-XDOMAIN, 0],
         y: [0, 9]
       }
     }
@@ -126,7 +127,7 @@ const GraphDashboard = React.createClass({
       let stateDomain = this.state.domain
       stateDomain.x = stateDomain.x.map(e => e + 1)
 
-      if (stateData.length > 10) {
+      if (stateData.length > XDOMAIN) {
         stateData.shift()
       }
 
