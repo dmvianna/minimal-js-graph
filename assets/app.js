@@ -113,7 +113,7 @@ const GraphDashboard = React.createClass({
       }],
       domain: {
         x: [0, 10],
-        y: [0, 10]
+        y: [0, 9]
       }
     }
   },
