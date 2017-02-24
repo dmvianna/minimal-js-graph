@@ -118,7 +118,7 @@ const GraphDashboard = React.createClass({
     }
   },
   componentWillMount: function () {
-    this.ws = new WebSocket("ws://parrot:3000/")
+    this.ws = new WebSocket("ws://" + window.location.hostname + ":3000/")
     this.ws.onopen = () => this.ws.send("ok")
   },
   componentDidMount: function () {
